@@ -66,3 +66,17 @@ LIMIT 5;
 
 --7)Calcular la variación porcentual de población por 
 --  departamento bonaerense entre 2001 y 2010.
+SELECT d.nombre AS LOCALIDAD,
+p2001.valor AS 'POBLACION 2001',
+p2010.valor AS 'POBLACION 2010',
+ROUND(((p2010.valor-p2001.valor)/p2001.valor)*100, 2) AS 'VARIACION %'
+FROM departamento d
+INNER JOIN provincia pr ON d.idprovincia=pr.id
+INNER JOIN pais pa ON pr.idpais=pa.id
+INNER JOIN poblacion p2001 ON p2001.idDepartamento=d.id
+inner JOIN anio a2001 ON a2001.id=p2001.idAnio
+INNER JOIN poblacion p2010 ON p2010.idDepartamento=d.id
+INNER JOIN anio a2010 ON a2010.id=p2010.idAnio
+WHERE pa.nombre='Argentina' AND pr.nombre='Buenos Aires'
+AND a2001.numero=2001 AND a2010.numero=2010
+ORDER BY `VARIACION %` DESC;
