@@ -98,3 +98,17 @@ AND pr.id=(SELECT id FROM provincia WHERE nombre="Buenos Aires")
 AND a2010.id=(SELECT id FROM anio WHERE numero=2010)
 ORDER BY `DENSIDAD POBLACION` DESC;
 
+--Parte 3 -Filtros y condiones
+--9)Listar los departamentos cuya densidad poblacional 
+--  supere los 1000 hab/km².
+SELECT d.nombre AS DEPARTAMENTO, 
+p.valor AS POBLACION, 
+s.valor AS SUPERFICIE, 
+ROUND((p.valor/s.valor), 2) AS DENSIDAD
+FROM poblacion p
+INNER JOIN departamento d ON p.idDepartamento=d.id
+INNER JOIN superficie s ON d.id=s.idDepartamento
+WHERE d.idprovincia=(SELECT id FROM provincia WHERE nombre="Buenos Aires")
+GROUP BY `DEPARTAMENTO` ASC
+HAVING DENSIDAD>1000
+ORDER BY `DENSIDAD` DESC;
