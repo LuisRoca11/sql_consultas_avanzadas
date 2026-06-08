@@ -1,3 +1,4 @@
+-- Active: 1780339369165@@127.0.0.1@3306@ubicacion
 --Parte 1: Consultas descriptivas
 --1.Listar todas las provincias de Argentina ordenadas 
 --  alfabéticamente.
@@ -80,3 +81,20 @@ INNER JOIN anio a2010 ON a2010.id=p2010.idAnio
 WHERE pa.nombre='Argentina' AND pr.nombre='Buenos Aires'
 AND a2001.numero=2001 AND a2010.numero=2010
 ORDER BY `VARIACION %` DESC;
+
+--8)Calcular la densidad poblacional (hab/km²)de cada 
+--  departamento bonaerense en 2010.
+SELECT
+d.nombre AS DEPARTAMENTO,
+ROUND((p2010.valor/s.valor),2) AS "DENSIDAD POBLACION"
+FROM pais pa
+INNER JOIN provincia pr ON pa.id=pr.idpais
+INNER JOIN departamento d ON pr.id=d.idprovincia
+INNER JOIN superficie s ON d.id=s.idDepartamento
+INNER JOIN poblacion p2010 ON p2010.idDepartamento=d.id
+INNER JOIN anio a2010 ON p2010.idAnio=a2010.id
+WHERE pa.id=(SELECT id FROM pais WHERE nombre="Argentina") 
+AND pr.id=(SELECT id FROM provincia WHERE nombre="Buenos Aires")
+AND a2010.id=(SELECT id FROM anio WHERE numero=2010)
+ORDER BY `DENSIDAD POBLACION` DESC;
+
