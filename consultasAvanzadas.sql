@@ -112,3 +112,20 @@ WHERE d.idprovincia=(SELECT id FROM provincia WHERE nombre="Buenos Aires")
 GROUP BY `DEPARTAMENTO` ASC
 HAVING DENSIDAD>1000
 ORDER BY `DENSIDAD` DESC;
+
+--10)Listar los departamentos que disminuyeron su 
+--   población entre 2001 y 2010.
+SELECT d.nombre AS DEPARTAMENTO,
+p2001.valor AS POBLACION_2001,
+p2010.valor AS POBLACION_2010
+FROM departamento d
+INNER JOIN poblacion p2001 ON d.id=p2001.idDepartamento
+INNER JOIN anio a2001 ON p2001.idAnio=a2001.id
+INNER JOIN poblacion p2010 ON p2010.idDepartamento=d.id
+INNER JOIN anio a2010 ON p2010.idAnio=a2010.id
+WHERE d.idprovincia=(SELECT id FROM provincia WHERE nombre="Buenos Aires") 
+AND a2001.id=(SELECT id FROM anio WHERE numero=2001)
+AND a2010.id=(SELECT id FROM anio WHERE numero=2010)
+GROUP BY `DEPARTAMENTO`
+HAVING `POBLACION_2001`>`POBLACION_2010`;
+
