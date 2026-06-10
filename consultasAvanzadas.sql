@@ -129,3 +129,14 @@ AND a2010.id=(SELECT id FROM anio WHERE numero=2010)
 GROUP BY `DEPARTAMENTO`
 HAVING `POBLACION_2001`>`POBLACION_2010`;
 
+--11)Calcular cuántos departamentos superan los 100.000 
+--   habitantes en 2010.
+SELECT d.nombre AS DEPARTAMEMTO,
+p2010.valor AS "POBLACION_2010>100MIL"
+FROM departamento d 
+INNER JOIN poblacion p2010 ON d.id=p2010.idDepartamento
+INNER JOIN anio a2010 ON p2010.idAnio=a2010.id
+WHERE d.idprovincia=(SELECT id FROM provincia WHERE nombre="Buenos Aires")
+AND a2010.id=(SELECT id FROM anio WHERE numero=2010)
+HAVING `POBLACION_2010>100MIL`>100000
+ORDER BY `POBLACION_2010>100MIL`DESC;
