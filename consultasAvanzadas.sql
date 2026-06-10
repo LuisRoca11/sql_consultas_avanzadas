@@ -140,3 +140,21 @@ WHERE d.idprovincia=(SELECT id FROM provincia WHERE nombre="Buenos Aires")
 AND a2010.id=(SELECT id FROM anio WHERE numero=2010)
 HAVING `POBLACION_2010>100MIL`>100000
 ORDER BY `POBLACION_2010>100MIL`DESC;
+
+--12)Identificar los 3 departamentos con mayor crecimiento 
+--   porcentual.
+SELECT d.nombre AS DEPARTAMENTO, 
+p2001.valor AS POBLACION_2001, 
+p2010.valor AS POBLACION_2010, 
+ROUND(((p2010.valor-p2001.valor)/p2001.valor),1) AS "% CRECIMIENTO"
+FROM departamento d
+INNER JOIN poblacion p2001 ON d.id=p2001.idDepartamento
+INNER JOIN anio a2001 ON p2001.idAnio=a2001.id
+INNER JOIN poblacion p2010 ON d.id=p2010.idDepartamento
+INNER JOIN anio a2010 ON p2010.idAnio=a2010.id
+WHERE d.idprovincia=(SELECT id FROM provincia WHERE nombre="Buenos Aires")
+AND a2001.id=(SELECT id FROM anio WHERE numero=2001)
+AND a2010.id=(SELECT id FROM anio WHERE numero=2010)
+ORDER BY `% CRECIMIENTO` DESC
+LIMIT 3;
+
